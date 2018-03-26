@@ -55,7 +55,7 @@ http.createServer(app).listen(port, 'localhost');
 console.log('--> Services listening on port: '+port);
 
 /********* home *********/
-app.get('/',  function (req, res) {
+app.get('/protected',  function (req, res) {
 
     //just verifying that there is a user object on the request
     if(req.user) {
@@ -75,12 +75,6 @@ app.get('/',  function (req, res) {
             addressFormatted = user.address.formatted || '';
         }
 
-        var sessionCookie = req.cookies;
-        console.log('Cookies: ', req.cookies)
-        var sessionID = cookieParser.signedCookie('s%3AgrnZqYasy3ctqwIvHR_GlqfxTDWQpP8W.I9kzQ69BXGM1Vil915eH2rEvr7hbFkNt%2FIdTlXeQ318', CLIENT_SECRET);
-        console.log('sessionID', sessionID)
-
-
         //Build and send an HTML response object with user data from Identity Service
         var head = '<head><title>Welcome</title></head>';
         var body = '<body><h1>Welcome ' + givenName + '</h1>' +
@@ -93,7 +87,6 @@ app.get('/',  function (req, res) {
                 '<li><u>gender:</u> ' + gender + '</li>' +
                 '<li><u>address:</u> ' + addressFormatted + '</li>' +
                 '<li><u>TCAD:</u> ' + pn + '</li>' +
-                '<li><u>SESSION:</u> ' + sessionID + '</li>' +
             '</ul>';
         res.send('<html>'+head+body+'</html>');
 
@@ -107,9 +100,15 @@ app.get('/failure',  function (req, res) {
     return res.redirect('/auth');
 });
 
+app.get('/',  function (req, res) {
+    var body = '<body>Hello !!! <br/><a href="/protected"><br/> To access protected resource click here</a></body>'
+    var head = '<head><title>Welcome</title></head>';
+    res.send('<html>'+head+body+'</html>');
+});
+
 /********* authentication *********/
 app.get('/auth',           passport.authenticate('provider'));
 app.get('/user',  passport.authenticate('provider', {
-    successRedirect: '/',
+    successRedirect: '/protected',
     failureRedirect: '/failure'
 }));
