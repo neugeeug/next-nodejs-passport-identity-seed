@@ -7,7 +7,7 @@ var Strategy = require('passport-openidconnect').Strategy;
 var IDENTITY_ISSUER = 'https://login.id-stage.telia.no/auth/realms/Employees';
 var IDENTITY_ISSUER_ENDPOINT = IDENTITY_ISSUER + '/protocol/openid-connect';
 
-// your client settings
+// investigate how to support other environments e.g dev, test, prod
 var CLIENT_ID = 'neo_test';
 var CLIENT_SECRET = 'YOUR SECRET KEY - to have one contact Eugeniusz';
 var CLIENT_REDIRECT_URL = 'http://localhost:8080/user';  //Telia Identity uses 'http://localhost:3000/auth/callback' as default
